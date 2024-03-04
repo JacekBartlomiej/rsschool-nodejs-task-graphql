@@ -13,7 +13,9 @@ const plugin: FastifyPluginAsyncTypebox = async (fastify) => {
       },
     },
     async handler() {
-      return prisma.memberType.findMany();
+      return prisma.memberType.findMany({include: {
+        profiles: true
+      }});
     },
   });
 
@@ -32,6 +34,9 @@ const plugin: FastifyPluginAsyncTypebox = async (fastify) => {
         where: {
           id: req.params.memberTypeId,
         },
+        include: {
+          profiles: true
+        }
       });
       if (memberType === null) {
         throw httpErrors.notFound();
